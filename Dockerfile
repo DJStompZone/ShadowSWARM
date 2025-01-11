@@ -8,10 +8,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN python3 -m pip install --no-cache-dir -r requirements.txt
+COPY banner.sh .
+RUN chmod a+x banner.sh && bash banner.sh && python3 -m pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /app
 COPY . /app
 
-CMD ["bash", "banner.sh"]
 CMD ["python3", "app.py"]
