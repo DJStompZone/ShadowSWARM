@@ -1,0 +1,73 @@
+##############################################################
+#                                                            #
+#  .::::::. ::                       ::                      #  
+# ;;;`    ` ;;;                      ;;;                     #
+# '[==/[[[[,[[[[cc,,.  ,ccc,    ,c[[[cc, ,ccc,'[[, [[, [['   #
+#   '''    $$$$"""$$$ $$$cc$$$ $$""""Y$$$$$"c$$$Y$ $$$ $P    #
+#  88b    dP888   "88o888   88888o,,od8P888   88 "88"888     #
+#   "YMmMY" MMM    YMM "YUM" MP"YUMMMP"  "YUMMP   "M "M"     #                                               
+#                                                            #
+#  .::::::..::    .   .::::::.     :::::::..   .        :    #
+# ;;;`    `';;,  ;;  ;;;' ;;`;;    ;;;;``;;;;  ;;,.    ;;;   #
+# '[==/[[[[,'[[, [[, [[' ,[[ '[[,   [[[,/[[['  [[[[, ,[[[[,  #
+#   '''    $  Y$c$$$c$P c$$$cc$$$c  $$$$$$c    $$$$$$$$"$$$  #
+#  88b    dP   "88"888   888   888  888b "88bo,888 Y88" 888o #
+#   "YMmMY"     "M "M"   YMM   \"\"`MMMM   "W" MMM  M'  "MMM #
+#                                                            #
+#                ShadowSWARM Docker Compose                  #
+#                       DJ Stomp 2025                        #
+#                   "No Rights Reserved"                     #
+#                                                            #
+##############################################################
+
+services:
+  master:
+    image: fsdp-streamlit-app
+    environment:
+      - NODE_RANK=0
+      - MASTER_ADDR=localhost
+      - MASTER_PORT=12345
+      - WORLD_SIZE=3
+      - NPROC_PER_NODE=1
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == ${MASTER_HOSTNAME}
+    ports:
+      - 8501:8501
+    volumes:
+      - ~/.ssh:/root/.ssh
+    command: >
+      /bin/bash -c "
+      bash /app/bootstrap-swarm.sh &&
+      streamlit run app.py
+      "
+
+  worker1:
+    image: fsdp-streamlit-app
+    environment:
+      - NODE_RANK=1
+      - MASTER_ADDR=${MASTER_IP}
+      - MASTER_PORT=12345
+      - WORLD_SIZE=3
+      - NPROC_PER_NODE=1
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == ${WORKER1_HOSTNAME}
+
+  worker2:
+    image: fsdp-streamlit-app
+    environment:
+      - NODE_RANK=2
+      - MASTER_ADDR=${MASTER_IP}
+      - MASTER_PORT=12345
+      - WORLD_SIZE=3
+      - NPROC_PER_NODE=1
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == ${WORKER2_HOSTNAME}
