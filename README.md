@@ -1,6 +1,6 @@
 # **ShadowSWARM**
 
-ShadowSWARM is a streamlined framework for setting up a multi-node, GPU-accelerated, distributed system for PyTorch workloads using Docker Swarm. With **ShadowSWARM**, you can quickly configure and deploy a scalable environment for machine learning inference or training across multiple machines.
+A streamlined framework for setting up a multi-node, GPU-accelerated, distributed system for PyTorch workloads using Docker Swarm. With **ShadowSWARM**, you can quickly configure and deploy a scalable environment for machine learning inference or training across multiple machines.
 
 ## **Features**
 - Automated Docker Swarm initialization and worker node setup.
