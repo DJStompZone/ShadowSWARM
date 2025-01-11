@@ -1,6 +1,5 @@
 <div align="center"><h1>ShadowSwarm</h1><br><img src="https://github.com/user-attachments/assets/621f87fc-f841-44b4-a6b7-7c23f9530860" width="90%"></div><hr>
 
-
 A streamlined framework for setting up a multi-node, GPU-accelerated, distributed system for PyTorch workloads using Docker Swarm. With **ShadowSWARM**, you can quickly configure and deploy a scalable environment for machine learning inference or training across multiple machines.
 
 <div align="center"><img height="40px" src="https://i.imgur.com/C9IoSZ7.png"><br><img height="40px" src="https://i.imgur.com/iuNPjoK.png"></div>
@@ -15,6 +14,7 @@ A streamlined framework for setting up a multi-node, GPU-accelerated, distribute
 ## **Quickstart Guide**
 
 ### **Prerequisites**
+
 1. **Docker and NVIDIA Drivers**:
    - Install Docker and NVIDIA drivers on all machines.
    - Install the NVIDIA Container Toolkit:
@@ -28,28 +28,32 @@ A streamlined framework for setting up a multi-node, GPU-accelerated, distribute
      ```
 
 2. **Python 3.8+**:
-   - Install Python on the master machine if you haven't already:
+   - Install Python on the master machine:
      ```bash
      sudo apt-get install python3 python3-pip
      ```
 
 3. **Passwordless SSH**:
-   - Configure passwordless SSH from the master to all worker nodes:
+   - Configure **passwordless SSH from the master to all worker nodes**:
      ```bash
      ssh-keygen -t rsa -b 2048
-     ssh-copy-id user@worker-ip-here
+     ssh-copy-id user@worker-ip
      ```
+     - You only need to set up SSH from the **master node to the workers**.
+     - The worker nodes do **not** need SSH access to each other or the master.
 
 ### **Installation**
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/DJStompZone/shadowswarm.git
-   cd shadowswarm
-   ```
+1. **Clone the Repository (Only on Master)**:
+   - Clone this repository on the master node:
+     ```bash
+     git clone https://github.com/DJStompZone/shadowswarm.git
+     cd shadowswarm
+     ```
+   - The worker nodes do **not** need the repository because Docker Swarm handles the deployment of containers automatically.
 
 2. **Build the Docker Image**:
-   Build the image for the system:
+   Build the Docker image on the master node:
    ```bash
    docker build -t shadowswarm-app .
    ```
@@ -78,6 +82,7 @@ A streamlined framework for setting up a multi-node, GPU-accelerated, distribute
    docker stack deploy --compose-file docker-compose.yml shadowswarm
    ```
 
+
 ### **Access the Streamlit App**
 
 1. Open a browser and navigate to the **master node IP**:
@@ -86,6 +91,7 @@ A streamlined framework for setting up a multi-node, GPU-accelerated, distribute
    ```
 
 2. Use the **Streamlit interface** to interact with your distributed PyTorch system.
+
 
 ## **File Structure**
 
@@ -101,6 +107,7 @@ shadowswarm/
 │   └── utils.py         # Utility functions
 ```
 
+
 ## **How It Works**
 
 1. **Configuration**:
@@ -115,10 +122,11 @@ shadowswarm/
 4. **Distributed Workload**:
    - The master node manages the distributed PyTorch workload across all nodes using Fully Sharded Data Parallel (FSDP).
 
+
 ## **Environment Variables**
 
 | Variable           | Description                                |
-|--|--|
+|--------------------|--------------------------------------------|
 | `MASTER_HOSTNAME`  | Hostname of the master node.               |
 | `MASTER_IP`        | IP address of the master node.             |
 | `WORKER_HOSTNAMES` | Comma-separated list of worker hostnames.  |
@@ -156,7 +164,7 @@ shadowswarm/
      ```bash
      docker run --rm --gpus all nvidia/cuda:12.1.1-base-ubuntu20.04 nvidia-smi
      ```
-
+     
 ## **Scaling**
 
 1. Add a new worker node to the swarm:
