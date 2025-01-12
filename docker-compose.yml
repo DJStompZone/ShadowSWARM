@@ -22,7 +22,7 @@
 
 services:
   master:
-    image: fsdp-streamlit-app
+    image: shadowswarm-app:latest
     environment:
       - NODE_RANK=0
       - MASTER_ADDR=localhost
@@ -45,7 +45,7 @@ services:
       "
 
   worker1:
-    image: fsdp-streamlit-app
+    image: shadowswarm-app:latest
     environment:
       - NODE_RANK=1
       - MASTER_ADDR=${MASTER_IP}
@@ -59,7 +59,7 @@ services:
           - node.hostname == ${WORKER1_HOSTNAME}
 
   worker2:
-    image: fsdp-streamlit-app
+    image: shadowswarm-app:latest
     environment:
       - NODE_RANK=2
       - MASTER_ADDR=${MASTER_IP}
