@@ -47,15 +47,15 @@ echo "Worker join token: $WORKER_JOIN_TOKEN"
 # IV. Instantiation
 for WORKER_HOSTNAME in "${WORKER_NODES[@]}"; do
   WORKER_IP=${HOSTNAME_TO_IP[$WORKER_HOSTNAME]}
-  
+
   if [ -z "$WORKER_IP" ]; then
     echo "Error: No IP address found for worker hostname $WORKER_HOSTNAME. Skipping."
     continue
   fi
-  
+
   echo "Triggering worker node ($WORKER_HOSTNAME - $WORKER_IP) to join the swarm..."
   ssh "$WORKER_IP" "docker swarm join --token $WORKER_JOIN_TOKEN $MASTER_IP:2377"
-  
+
   if [ $? -ne 0 ]; then
     echo "Error: Worker node $WORKER_HOSTNAME failed to join the swarm."
   else
