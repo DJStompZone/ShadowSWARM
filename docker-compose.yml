@@ -34,15 +34,16 @@ services:
       placement:
         constraints:
           - node.hostname == ${MASTER_HOSTNAME}
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
     ports:
       - 8501:8501
     volumes:
       - ~/.ssh:/root/.ssh
     command: >
-      /bin/bash -c "
-      bash /app/bootstrap.sh &&
-      streamlit run app.py
-      "
+      /bin/bash -c "bash /app/bootstrap.sh && streamlit run app.py"
 
   worker1:
     image: djstomp/shadowswarm-app:latest
@@ -57,6 +58,10 @@ services:
       placement:
         constraints:
           - node.hostname == ${WORKER1_HOSTNAME}
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
 
   worker2:
     image: djstomp/shadowswarm-app:latest
@@ -71,3 +76,7 @@ services:
       placement:
         constraints:
           - node.hostname == ${WORKER2_HOSTNAME}
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
