@@ -13,6 +13,7 @@ COPY requirements.txt .
 COPY banner.sh .
 COPY app.py .
 COPY bootstrap.sh .
+COPY .env .
 
 RUN dos2unix banner.sh bootstrap.sh && \
     chmod +x banner.sh bootstrap.sh
