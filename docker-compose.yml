@@ -40,7 +40,7 @@ services:
       - ~/.ssh:/root/.ssh
     command: >
       /bin/bash -c "
-      bash /app/bootstrap-swarm.sh &&
+      bash /app/bootstrap.sh &&
       streamlit run app.py
       "
 
