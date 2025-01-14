@@ -33,22 +33,19 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == ${MASTER_HOSTNAME}
+          - node.hostname == gpu-ai-server
     ports:
       - 8501:8501
     volumes:
       - ~/.ssh:/root/.ssh
     command: >
-      /bin/bash -c "
-      bash /app/bootstrap.sh &&
       streamlit run app.py
-      "
 
   worker1:
     image: djstomp/shadowswarm-app:latest
     environment:
       - NODE_RANK=1
-      - MASTER_ADDR=${MASTER_IP}
+      - MASTER_ADDR=192.168.17.160
       - MASTER_PORT=12345
       - WORLD_SIZE=3
       - NPROC_PER_NODE=1
@@ -56,13 +53,13 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == ${WORKER1_HOSTNAME}
+          - node.hostname == hidden-server
 
   worker2:
     image: djstomp/shadowswarm-app:latest
     environment:
       - NODE_RANK=2
-      - MASTER_ADDR=${MASTER_IP}
+      - MASTER_ADDR=192.168.17.160
       - MASTER_PORT=12345
       - WORLD_SIZE=3
       - NPROC_PER_NODE=1
@@ -70,4 +67,4 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == ${WORKER2_HOSTNAME}
+          - node.hostname == Tesla-Server
