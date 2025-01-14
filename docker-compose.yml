@@ -33,13 +33,25 @@ services:
       replicas: 1
       placement:
         constraints:
+<<<<<<< HEAD
           - node.hostname == gpu-ai-server
+=======
+          - node.hostname == ${MASTER_HOSTNAME}
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+>>>>>>> b5d29a9928e441b7ecb1eacb4793a14c899a9a22
     ports:
       - 8501:8501
     volumes:
       - ~/.ssh:/root/.ssh
     command: >
+<<<<<<< HEAD
       streamlit run app.py
+=======
+      /bin/bash -c "bash /app/bootstrap.sh && streamlit run app.py"
+>>>>>>> b5d29a9928e441b7ecb1eacb4793a14c899a9a22
 
   worker1:
     image: djstomp/shadowswarm-app:latest
@@ -53,7 +65,15 @@ services:
       replicas: 1
       placement:
         constraints:
+<<<<<<< HEAD
           - node.hostname == hidden-server
+=======
+          - node.hostname == ${WORKER1_HOSTNAME}
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+>>>>>>> b5d29a9928e441b7ecb1eacb4793a14c899a9a22
 
   worker2:
     image: djstomp/shadowswarm-app:latest
@@ -67,4 +87,12 @@ services:
       replicas: 1
       placement:
         constraints:
+<<<<<<< HEAD
           - node.hostname == Tesla-Server
+=======
+          - node.hostname == ${WORKER2_HOSTNAME}
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+>>>>>>> b5d29a9928e441b7ecb1eacb4793a14c899a9a22
