@@ -8,7 +8,7 @@ __pycache__
 *.pyo
 
 # Ignore local environment files
-.env
+# .env
 *.log
 
 # Ignore Docker build artifacts
